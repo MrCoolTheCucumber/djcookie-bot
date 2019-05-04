@@ -27,18 +27,23 @@ before(function() {
     execCommand = (command, arg, message) => {
         return commandDict[command].exec(arg, message);
     };
+
+    if (process.env.NODE_ENV !== 'production') {
+        //flush redis db
+        singletons.redisClient.flushall();
+    }
 });
 
 after(function() {
     process.exit(0);
 });
 
-describe('commands', function() {
+describe('[COMMAND] commands', function() {
     it('should not be of length 0', function () {
         assert.notStrictEqual(singletons.commands.length, 0)
     });
 
-    describe('Meme commands', function () {
+    describe('[COMMAND] Meme commands', function () {
         describe('[COMMAND] police', function () {
             it('should not throw', function () {
                 assert.doesNotThrow(() => {
@@ -60,6 +65,34 @@ describe('commands', function() {
 
             it('should respond with a string', function () {
                 assert.strictEqual(typeof(messageResponses[messageIndex]), "string")
+            });
+        });
+
+        describe('[COMMAND] ?', function () {
+            it('should not throw', function () {
+                assert.doesNotThrow(() => {
+                    execCommand('?', "10", message);
+                });
+            });
+
+            it('should not return null on correct input', function () {
+                execCommand('?', '10', message);
+                assert.notStrictEqual(messageResponses[messageIndex], null);
+            });
+
+            it('should return on bad input', function () {
+                execCommand('?', 'fsdklfhsdlf', message);
+                assert.strictEqual(messageResponses[messageIndex], '');
+            });
+
+            it('should append the correct number of "?"', function () {
+                execCommand('?', '100', message);
+                assert.strictEqual(messageResponses[messageIndex].length, 100);
+            });
+
+            it('should return a message if over 2000 is entered', () => {
+                execCommand('?', '10000', message);
+                assert.strictEqual(messageResponses[messageIndex], "You are mega dumb dumb?");
             });
         });
     });

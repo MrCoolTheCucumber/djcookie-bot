@@ -8,7 +8,8 @@ singletons.concatCommands([
         name: '?',
         info: 'When someone goes full retard, ' + singletons.commandChar + '? <num>',
         exec: (arg, message) => {
-            let num = Number(message);
+            let num = parseInt(arg);
+
             if (isNaN(num || !isFinite(num))) {
                 return;
             }
