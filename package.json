@@ -16,7 +16,7 @@
     "erlpack": "github:discordapp/erlpack",
     "ffmpeg": "0.0.4",
     "libsodium-wrappers": "^0.7.4",
-    "node-opus": "^0.2.7",
+    "opusscript": "*",
     "redis": "^2.8.0",
     "request": "^2.88.0",
     "youtube-dl": "^1.13.1",
