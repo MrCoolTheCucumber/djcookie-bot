@@ -10,4 +10,4 @@ COPY --chown=node . .
 EXPOSE 80
 EXPOSE 443
 
-CMD ["node", "start"]
+CMD ["node", "src/app.js"]
