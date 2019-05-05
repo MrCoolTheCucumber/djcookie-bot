@@ -1,6 +1,12 @@
 const Discord = require("discord.js");
 const redis = require('redis');
-const redisClient = redis.createClient({host: 'redis'});
+let redisClient;
+
+if (process.env.NODE_ENV !== 'production') {
+    redisClient = redis.createClient();
+} else {
+    redisClient = redis.createClient({host: 'redis'});
+}
 
 redisClient.on("error", function (err) {
     console.log("[Redis] Error: " + err);

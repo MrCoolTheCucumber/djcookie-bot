@@ -5,17 +5,21 @@ require('../src/command_libs/yt');
 require('../src/command_libs/gambling');
 require('../src/command_libs/memes');
 
-let message = { channel: {} };
+let message = { channel: {}, author: {}};
 let messageResponses = [];
 let messageIndex = -1;
 let execCommand;
 let commandDict = {};
 
-message.channel.send = (resp) => {
-    messageResponses[++messageIndex] = resp;
+const ID = '123456';
+
+let sleep = (millis) => {
+    return new Promise(resolve => setTimeout(resolve, millis));
 };
 
 before(function() {
+    message.author.id = ID;
+
     message.channel.send = (resp) => {
         messageResponses[++messageIndex] = resp;
     };
@@ -38,12 +42,12 @@ after(function() {
     process.exit(0);
 });
 
-describe('[COMMAND] commands', function() {
+describe('=== COMMANDS  ===', function() {
     it('should not be of length 0', function () {
         assert.notStrictEqual(singletons.commands.length, 0)
     });
 
-    describe('[COMMAND] Meme commands', function () {
+    describe('[Cagegory] Meme commands', function () {
         describe('[COMMAND] police', function () {
             it('should not throw', function () {
                 assert.doesNotThrow(() => {
@@ -95,6 +99,31 @@ describe('[COMMAND] commands', function() {
                 assert.strictEqual(messageResponses[messageIndex], "You are mega dumb dumb?");
             });
         });
+    });
+
+    describe('[CATEGORY] Gambling commands', function () {
+        beforeEach(() => {
+            singletons.redisClient.flushall();
+        });
+
+        describe('[COMMAND] bal', function () {
+            it('should set balance to 0 if not initialized', async function () {
+                execCommand('bal', "", message);
+                await sleep(10);
+                assert.isTrue(messageResponses[messageIndex].includes('0'));
+            });
+
+            it('should return the correct bal', async () => {
+                execCommand('claim', "", message);
+                await sleep(10);
+                execCommand('bal', "", message);
+                await sleep(10);
+
+                assert.isTrue(messageResponses[messageIndex].includes("500"));
+            });
+        });
+
+
     });
 });
 

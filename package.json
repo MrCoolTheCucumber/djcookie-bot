@@ -4,7 +4,7 @@
   "description": "A discord bot",
   "main": "src/app.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --exit",
     "start": "node src/app.js"
   },
   "author": "Ruben Ghatoaura",
