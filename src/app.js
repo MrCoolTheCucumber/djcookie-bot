@@ -73,6 +73,11 @@ bot.on('message', message => {
                 command.exec(match[3], message);
             }
         });
+
+        // If iron talks, tell him to shut up
+        if (message.author.id === "190134149888081920") {
+            message.author.sendMessage("shut up");
+        }
     }
 });
 
