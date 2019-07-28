@@ -16,6 +16,8 @@ require('./command_libs/yt');
 require('./command_libs/gambling');
 require('./command_libs/memes');
 
+let iron_shutup_timer = 0;
+
 RegExp.escape= function(s) {
     return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 };
@@ -75,8 +77,9 @@ bot.on('message', message => {
         });
 
         // If iron talks, tell him to shut up
-        if (message.author.id === "190134149888081920") {
-            message.channel.sendMessage("<@190134149888081920> Shut up")
+        if (message.author.id === "190134149888081920" && Date.now() - iron_shutup_timer > 300) {
+            message.channel.sendMessage("<@190134149888081920> Shut up");
+            iron_shutup_timer = Date.now();
         }
     }
 });
