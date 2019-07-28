@@ -76,7 +76,7 @@ bot.on('message', message => {
 
         // If iron talks, tell him to shut up
         if (message.author.id === "190134149888081920") {
-            message.author.sendMessage("shut up");
+            message.channel.sendMessage("<@190134149888081920> Shut up")
         }
     }
 });
